@@ -1,5 +1,5 @@
 import { createElement, ReactElement } from "react";
-import { MapContainer, Marker as MarkerComponent, Popup, TileLayer, useMap } from "react-leaflet";
+import { MapContainer, Marker as MarkerComponent, Popup, TileLayer, useMap, Polyline } from "react-leaflet";
 import classNames from "classnames";
 import { getDimensions } from "@mendix/widget-plugin-platform/utils/get-dimensions";
 import { SharedProps } from "../../typings/shared";
@@ -7,6 +7,8 @@ import { MapProviderEnum } from "../../typings/MapsProps";
 import { translateZoom } from "../utils/zoom";
 import { latLngBounds, Icon as LeafletIcon, DivIcon } from "leaflet";
 import { baseMapLayer } from "../utils/leaflet";
+import { multiPolyline, polyLineOptions } from "../utils/polylineCustom";
+
 
 export interface LeafletProps extends SharedProps {
     mapProvider: MapProviderEnum;
@@ -83,6 +85,9 @@ export function LeafletMap(props: LeafletProps): ReactElement {
                     zoomControl={zoomControl}
                 >
                     <TileLayer {...baseMapLayer(mapProvider, mapsToken)} />
+
+                    <Polyline className="polyline" pathOptions={polyLineOptions} positions={multiPolyline} />
+
                     {locations
                         .concat(currentLocation ? [currentLocation] : [])
                         .filter(m => !!m)
