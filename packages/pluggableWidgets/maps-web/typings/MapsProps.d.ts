@@ -38,6 +38,13 @@ export interface DynamicMarkersType {
     customMarkerDynamic?: DynamicValue<WebImage>;
 }
 
+export interface DynamicPolyLinesType {
+    polylineDS?: ListValue;
+    title?: ListAttributeValue<string>;
+    coordinates?: ListAttributeValue<string>;
+    onClickAttribute?: ListActionValue;
+}
+
 export type WidthUnitEnum = "percentage" | "pixels";
 
 export type HeightUnitEnum = "percentageOfWidth" | "pixels" | "percentageOfParent";
@@ -69,6 +76,13 @@ export interface DynamicMarkersPreviewType {
     customMarkerDynamic: { type: "static"; imageUrl: string; } | { type: "dynamic"; entity: string; } | null;
 }
 
+export interface DynamicPolyLinesPreviewType {
+    polylineDS: {} | { caption: string } | { type: string } | null;
+    title: string;
+    coordinates: string;
+    onClickAttribute: {} | null;
+}
+
 export interface MapsContainerProps {
     name: string;
     class: string;
@@ -77,6 +91,7 @@ export interface MapsContainerProps {
     advanced: boolean;
     markers: MarkersType[];
     dynamicMarkers: DynamicMarkersType[];
+    dynamicPolyLines: DynamicPolyLinesType[];
     apiKey: string;
     apiKeyExp?: DynamicValue<string>;
     geodecodeApiKey: string;
@@ -111,6 +126,7 @@ export interface MapsPreviewProps {
     advanced: boolean;
     markers: MarkersPreviewType[];
     dynamicMarkers: DynamicMarkersPreviewType[];
+    dynamicPolyLines: DynamicPolyLinesPreviewType[];
     apiKey: string;
     apiKeyExp: string;
     geodecodeApiKey: string;

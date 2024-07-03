@@ -139,6 +139,45 @@
                         </propertyGroup>
                     </properties>
                 </property>
+
+                <property key="dynamicPolyLines" type="object" isList="true" required="false">
+                    <caption>Polyline list</caption>
+                    <description>A list of polyLines to show on the map.</description>
+                    <properties>
+                        <propertyGroup caption="Locations">
+                            <propertyGroup caption="Location">
+                                <property key="polylineDS" type="datasource" isList="true" required="false">
+                                    <caption>Data source</caption>
+                                    <description />
+                                </property>
+                                
+                                <property key="title" type="attribute" dataSource="polylineDS" required="false">
+                                    <caption>Title</caption>
+                                    <description>Title displayed when clicking the polyLine.</description>
+                                    <attributeTypes>
+                                        <attributeType name="String" />
+                                    </attributeTypes>
+                                </property>
+                                
+                                <property key="coordinates" type="attribute" dataSource="polylineDS" required="false">
+                                    <caption>Coordinates</caption>
+                                    <description>String with the coordinates.</description>
+                                    <attributeTypes>
+                                        <attributeType name="String" />
+                                    </attributeTypes>
+                                </property>
+                                
+                            </propertyGroup>
+                            <propertyGroup caption="Events">
+                                <property key="onClickAttribute" type="action" dataSource="polylineDS" required="false">
+                                    <caption>On click</caption>
+                                    <description />
+                                </property>
+                            </propertyGroup>
+                        </propertyGroup>
+                    </properties>
+                </property>
+
             </propertyGroup>
             <propertyGroup caption="Configurations">
                 <property key="apiKey" type="string" required="false">
