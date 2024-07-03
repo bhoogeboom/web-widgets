@@ -74,7 +74,7 @@ export function LeafletMap(props: LeafletProps): ReactElement {
                 <MapContainer
                     attributionControl={attributionControl}
                     center={center}
-                    className="widget-leaflet-maps"
+                    className="widget-leaflet-maps widget-leaflet-maps-custom"
                     dragging={dragging}
                     maxZoom={18}
                     minZoom={1}
