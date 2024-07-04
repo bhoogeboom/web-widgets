@@ -146,12 +146,12 @@
                     <properties>
                         <propertyGroup caption="Locations">
                             <propertyGroup caption="Location">
-                                <property key="polylineDS" type="datasource" isList="true" required="false">
+                                <property key="polylineDS" type="datasource" isList="true" required="true">
                                     <caption>Data source</caption>
                                     <description />
                                 </property>
                                 
-                                <property key="title" type="attribute" dataSource="polylineDS" required="false">
+                                <property key="title" type="attribute" dataSource="polylineDS" required="true">
                                     <caption>Title</caption>
                                     <description>Title displayed when clicking the polyLine.</description>
                                     <attributeTypes>
@@ -159,11 +159,43 @@
                                     </attributeTypes>
                                 </property>
                                 
-                                <property key="coordinates" type="attribute" dataSource="polylineDS" required="false">
+                                <property key="coordinates" type="attribute" dataSource="polylineDS" required="true">
                                     <caption>Coordinates</caption>
                                     <description>String with the coordinates.</description>
                                     <attributeTypes>
                                         <attributeType name="String" />
+                                    </attributeTypes>
+                                </property>
+
+                                <property key="polytype" type="attribute" dataSource="polylineDS" required="true">
+                                    <caption>Type</caption>
+                                    <description>Type: Polygon or Polyline.</description>
+                                    <attributeTypes>
+                                        <attributeType name="Enum" />
+                                    </attributeTypes>
+                                </property>
+
+                                <property key="color" type="attribute" dataSource="polylineDS" required="true">
+                                    <caption>Color</caption>
+                                    <description>Color in hex format.</description>
+                                    <attributeTypes>
+                                        <attributeType name="String" />
+                                    </attributeTypes>
+                                </property>
+
+                                <property key="opacity" type="attribute" dataSource="polylineDS" required="true">
+                                    <caption>Opacity</caption>
+                                    <description>Opacity (value between 0 and 1).</description>
+                                    <attributeTypes>
+                                        <attributeType name="Decimal" />
+                                    </attributeTypes>
+                                </property>
+
+                                <property key="thickness" type="attribute" dataSource="polylineDS" required="true">
+                                    <caption>Thickness</caption>
+                                    <description>Thickness.</description>
+                                    <attributeTypes>
+                                        <attributeType name="Integer" />
                                     </attributeTypes>
                                 </property>
                                 

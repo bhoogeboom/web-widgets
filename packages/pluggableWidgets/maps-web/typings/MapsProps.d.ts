@@ -39,9 +39,13 @@ export interface DynamicMarkersType {
 }
 
 export interface DynamicPolyLinesType {
-    polylineDS?: ListValue;
-    title?: ListAttributeValue<string>;
-    coordinates?: ListAttributeValue<string>;
+    polylineDS: ListValue;
+    title: ListAttributeValue<string>;
+    coordinates: ListAttributeValue<string>;
+    polytype: ListAttributeValue<string>;
+    color: ListAttributeValue<string>;
+    opacity: ListAttributeValue<Big>;
+    thickness: ListAttributeValue<Big>;
     onClickAttribute?: ListActionValue;
 }
 
@@ -80,6 +84,10 @@ export interface DynamicPolyLinesPreviewType {
     polylineDS: {} | { caption: string } | { type: string } | null;
     title: string;
     coordinates: string;
+    polytype: string;
+    color: string;
+    opacity: string;
+    thickness: string;
     onClickAttribute: {} | null;
 }
 
