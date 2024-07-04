@@ -5,9 +5,9 @@ import { getDimensions } from "@mendix/widget-plugin-platform/utils/get-dimensio
 import { SharedProps } from "../../typings/shared";
 import { MapProviderEnum } from "../../typings/MapsProps";
 import { translateZoom } from "../utils/zoom";
-import { latLngBounds, Icon as LeafletIcon, DivIcon } from "leaflet";
+import { latLngBounds, Icon as LeafletIcon, DivIcon, marker } from "leaflet";
 import { baseMapLayer } from "../utils/leaflet";
-import { multiPolyline, polyLineOptions } from "../utils/polylineCustom";
+import { polyLineOptions } from "../utils/polylineCustom";
 
 
 export interface LeafletProps extends SharedProps {
@@ -61,6 +61,7 @@ export function LeafletMap(props: LeafletProps): ReactElement {
         className,
         currentLocation,
         locations,
+        dynamicPolyLines,
         mapProvider,
         mapsToken,
         optionScroll: scrollWheelZoom,
@@ -69,6 +70,24 @@ export function LeafletMap(props: LeafletProps): ReactElement {
         zoomLevel: zoom,
         optionDrag: dragging
     } = props;
+
+
+    //console.info('dynamicPolyLines jsonstringify: ' + JSON.stringify(dynamicPolyLines[0]));
+    //console.info('Coordinates: ' + dynamicPolyLines[0]);
+
+    if (!dynamicPolyLines) {
+        console.info('dynamicPolyLines is undefined or null');
+    } else if (dynamicPolyLines.length === 0) {
+        console.info('dynamicPolyLines is an empty array');
+    } else if (!dynamicPolyLines[0]) {
+        console.info('dynamicPolyLines[0] is undefined');
+    } else if (!dynamicPolyLines[0].hasOwnProperty('coordinates')) {
+        console.info('dynamicPolyLines[0] does not have a title property');
+    } else {
+        //console.info('Coordinates: ' + dynamicPolyLines[0].coordinates);
+    }
+
+
 
     return (
         <div className={classNames("widget-maps", className)} style={{ ...style, ...getDimensions(props) }}>
@@ -85,8 +104,40 @@ export function LeafletMap(props: LeafletProps): ReactElement {
                     zoomControl={zoomControl}
                 >
                     <TileLayer {...baseMapLayer(mapProvider, mapsToken)} />
+       
+                    {dynamicPolyLines && dynamicPolyLines.map((dynamicPolyLine, index) => {
+                        if (dynamicPolyLine.coordinates && dynamicPolyLine.coordinates.length > 0) {
 
-                    <Polyline className="polyline" pathOptions={polyLineOptions} positions={multiPolyline} />
+                        return (
+                            <Polyline
+                                key={`polyline_${index}`}
+                                className="polyline"
+                                eventHandlers={{
+                                    click: dynamicPolyLine.onClick ? undefined : dynamicPolyLine.onClick
+                                }}
+                                pathOptions={polyLineOptions}
+                                positions={dynamicPolyLine.coordinates}
+
+                            >
+                                 {dynamicPolyLine.title && (
+                                    <Popup>
+                                        <span
+                                            style={{ cursor: dynamicPolyLine.onClick ? "pointer" : "none" }}
+                                            onClick={dynamicPolyLine.onClick}
+                                        >
+                                            {dynamicPolyLine.title}
+                                        </span>
+                                    </Popup>
+                                )}
+                            </Polyline>
+                        );
+                    
+                        } else {
+                            console.warn(`Coordinates are null, undefined, or invalid for dynamicPolyLine at index ${index}:`, dynamicPolyLine.coordinates);
+                        return null;
+                        }
+                        })}
+
 
                     {locations
                         .concat(currentLocation ? [currentLocation] : [])
@@ -121,6 +172,8 @@ export function LeafletMap(props: LeafletProps): ReactElement {
                                 )}
                             </MarkerComponent>
                         ))}
+
+                        
                     <SetBoundsComponent autoZoom={autoZoom} currentLocation={currentLocation} locations={locations} />
                 </MapContainer>
             </div>

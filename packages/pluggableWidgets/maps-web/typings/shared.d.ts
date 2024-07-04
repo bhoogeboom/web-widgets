@@ -17,6 +17,13 @@ export interface Marker {
     title?: string;
 }
 
+export interface DynamicPolyLine {
+    coordinates?: LatLngExpression[][];
+    onClick?: () => void;
+    title?: string;
+}
+
+
 export interface SharedProps extends Dimensions {
     autoZoom: boolean;
     optionZoomControl: boolean;
@@ -26,6 +33,7 @@ export interface SharedProps extends Dimensions {
     showCurrentLocation: boolean;
     currentLocation?: Marker;
     locations: Marker[];
+    dynamicPolyLines: DynamicPolyLine[];
     mapsToken?: string;
     className?: string;
     style?: CSSProperties;
