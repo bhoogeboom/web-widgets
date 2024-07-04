@@ -23,6 +23,13 @@ export interface DynamicPolyLine {
     title?: string;
 }
 
+export interface DynamicPolyGon {
+    coordinates?: LatLngExpression[][];
+    onClick?: () => void;
+    title?: string;
+}
+
+
 
 export interface SharedProps extends Dimensions {
     autoZoom: boolean;
@@ -34,6 +41,7 @@ export interface SharedProps extends Dimensions {
     currentLocation?: Marker;
     locations: Marker[];
     dynamicPolyLines: DynamicPolyLine[];
+    dynamicPolyGons: DynamicPolyGon[];
     mapsToken?: string;
     className?: string;
     style?: CSSProperties;

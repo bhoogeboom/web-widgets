@@ -1,5 +1,5 @@
 import { createElement, ReactElement } from "react";
-import { MapContainer, Marker as MarkerComponent, Popup, TileLayer, useMap, Polyline } from "react-leaflet";
+import { MapContainer, Marker as MarkerComponent, Popup, TileLayer, useMap, Polyline, Polygon } from "react-leaflet";
 import classNames from "classnames";
 import { getDimensions } from "@mendix/widget-plugin-platform/utils/get-dimensions";
 import { SharedProps } from "../../typings/shared";
@@ -62,6 +62,7 @@ export function LeafletMap(props: LeafletProps): ReactElement {
         currentLocation,
         locations,
         dynamicPolyLines,
+        dynamicPolyGons,
         mapProvider,
         mapsToken,
         optionScroll: scrollWheelZoom,
@@ -70,23 +71,6 @@ export function LeafletMap(props: LeafletProps): ReactElement {
         zoomLevel: zoom,
         optionDrag: dragging
     } = props;
-
-
-    //console.info('dynamicPolyLines jsonstringify: ' + JSON.stringify(dynamicPolyLines[0]));
-    //console.info('Coordinates: ' + dynamicPolyLines[0]);
-
-    if (!dynamicPolyLines) {
-        console.info('dynamicPolyLines is undefined or null');
-    } else if (dynamicPolyLines.length === 0) {
-        console.info('dynamicPolyLines is an empty array');
-    } else if (!dynamicPolyLines[0]) {
-        console.info('dynamicPolyLines[0] is undefined');
-    } else if (!dynamicPolyLines[0].hasOwnProperty('coordinates')) {
-        console.info('dynamicPolyLines[0] does not have a title property');
-    } else {
-        //console.info('Coordinates: ' + dynamicPolyLines[0].coordinates);
-    }
-
 
 
     return (
@@ -107,7 +91,6 @@ export function LeafletMap(props: LeafletProps): ReactElement {
        
                     {dynamicPolyLines && dynamicPolyLines.map((dynamicPolyLine, index) => {
                         if (dynamicPolyLine.coordinates && dynamicPolyLine.coordinates.length > 0) {
-
                         return (
                             <Polyline
                                 key={`polyline_${index}`}
@@ -117,7 +100,6 @@ export function LeafletMap(props: LeafletProps): ReactElement {
                                 }}
                                 pathOptions={polyLineOptions}
                                 positions={dynamicPolyLine.coordinates}
-
                             >
                                  {dynamicPolyLine.title && (
                                     <Popup>
@@ -131,12 +113,41 @@ export function LeafletMap(props: LeafletProps): ReactElement {
                                 )}
                             </Polyline>
                         );
-                    
                         } else {
                             console.warn(`Coordinates are null, undefined, or invalid for dynamicPolyLine at index ${index}:`, dynamicPolyLine.coordinates);
                         return null;
                         }
-                        })}
+                    })}
+
+                    {dynamicPolyGons && dynamicPolyGons.map((dynamicPolygon, index) => {
+                        if (dynamicPolygon.coordinates && dynamicPolygon.coordinates.length > 0) {
+                        return (
+                            <Polygon
+                                key={`polygon_${index}`}
+                                className="polygon"
+                                eventHandlers={{
+                                    click: dynamicPolygon.onClick ? undefined : dynamicPolygon.onClick
+                                }}
+                                pathOptions={polyLineOptions}
+                                positions={dynamicPolygon.coordinates}
+                            >
+                                 {dynamicPolygon.title && (
+                                    <Popup>
+                                        <span
+                                            style={{ cursor: dynamicPolygon.onClick ? "pointer" : "none" }}
+                                            onClick={dynamicPolygon.onClick}
+                                        >
+                                            {dynamicPolygon.title}
+                                        </span>
+                                    </Popup>
+                                )}
+                            </Polygon>
+                        );
+                        } else {
+                            console.warn(`Coordinates are null, undefined, or invalid for dynamicPolyLine at index ${index}:`, dynamicPolyLine.coordinates);
+                        return null;
+                        }
+                    })}
 
 
                     {locations

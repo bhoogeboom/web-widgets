@@ -1,34 +1,79 @@
 import { LatLngExpression } from 'leaflet';
 import { DynamicPolyLinesType } from 'typings/MapsProps';
-import { DynamicPolyLine } from "../../typings/shared";
+import { DynamicPolyLine, DynamicPolyGon } from "../../typings/shared";
 import { ObjectItem, ValueStatus } from "mendix";
 import { parseLatLngArrayFromString } from "../utils/functionsCustom"
 
 export const polyLineOptions = { color: 'blue' };
 
-//Deze functie zet een object dynamicPolyLine(string) om in een object van dynamicPolyline (LatLngExpression) 
-  function fromDatasource(dynamicPolyline: DynamicPolyLinesType, item: ObjectItem): DynamicPolyLine {
-    const { title, coordinates, onClickAttribute } = dynamicPolyline;
 
-    const coordinatesString:string = coordinates ? coordinates.get(item).value as string : "";
-    //Het omzetten van coordinates string naar LatLngExpression die gebruikt kan worden als input van de leaflet widget
+//Deze functie zet een object dynamicPolyLine(string) om in een object van dynamicPolyline (LatLngExpression) 
+function polyLineDataSource(dynamicPolyline: DynamicPolyLinesType, item: ObjectItem): DynamicPolyLine | null {
+  const { title, coordinates, onClickAttribute, polytype } = dynamicPolyline;
+  const polyType: string = polytype ? polytype.get(item).value as string : "";
+
+  if (polyType === 'Polyline') {
+    const coordinatesString: string = coordinates ? coordinates.get(item).value as string : "";
+    // Convert coordinates string to LatLngExpression that can be used as input for the leaflet widget
     const coordinatesLatLngExpression: LatLngExpression[][] = parseLatLngArrayFromString(coordinatesString);
 
     return {
-        title: title ? title.get(item).value : "",
-        coordinates: coordinatesLatLngExpression,
-        onClick: onClickAttribute ? onClickAttribute.get(item).execute : undefined
+      title: title ? title.get(item).value : "",
+      coordinates: coordinatesLatLngExpression,
+      onClick: onClickAttribute ? onClickAttribute.get(item).execute : undefined
     };
+  } else {
+    return null; // Return null if polyType is not 'polyLine'
+  }
 }
 
-//Deze functie checkt of de attributen al gevuld zijn vanuit Mendix en loopt dan door de array 
+
+//Deze functie zet een object dynamicPolyLine(string) om in een object van dynamicPolyline (LatLngExpression) 
+function polyGonDataSource(dynamicPolyline: DynamicPolyLinesType, item: ObjectItem): DynamicPolyGon | null {
+  const { title, coordinates, onClickAttribute, polytype } = dynamicPolyline;
+  const polyType: string = polytype ? polytype.get(item).value as string : "";
+
+  if (polyType === 'Polygon') {
+    const coordinatesString: string = coordinates ? coordinates.get(item).value as string : "";
+    // Convert coordinates string to LatLngExpression that can be used as input for the leaflet widget
+    const coordinatesLatLngExpression: LatLngExpression[][] = parseLatLngArrayFromString(coordinatesString);
+
+    return {
+      title: title ? title.get(item).value : "",
+      coordinates: coordinatesLatLngExpression,
+      onClick: onClickAttribute ? onClickAttribute.get(item).execute : undefined
+    };
+  } else {
+    return null; // Return null if polyType is not 'polyGon'
+  }
+}
+
+
+
 function convertdynamicPolyline(dynamicPolyline: DynamicPolyLinesType): DynamicPolyLine[] {
   if (dynamicPolyline.polylineDS && dynamicPolyline.polylineDS.status === ValueStatus.Available) {
-    //console.info('dynamicPolyline available: ' + JSON.stringify(dynamicPolyline));
-    return dynamicPolyline.polylineDS.items?.map(i => fromDatasource(dynamicPolyline, i)) ?? [];
+    return (
+      dynamicPolyline.polylineDS.items
+        ?.map(i => polyLineDataSource(dynamicPolyline, i))
+        .filter(item => item !== null) ?? [] // Filter out null values
+    );
+  }
+  return [];
 }
-return [];
+
+
+function convertdynamicPolyGon(dynamicPolyline: DynamicPolyLinesType): DynamicPolyGon[] {
+  if (dynamicPolyline.polylineDS && dynamicPolyline.polylineDS.status === ValueStatus.Available) {
+    return (
+      dynamicPolyline.polylineDS.items
+        ?.map(i => polyGonDataSource(dynamicPolyline, i))
+        .filter(item => item !== null) ?? [] // Filter out null values
+    );
+  }
+  return [];
 }
+
+
 
 //Deze functie krijgt een array van dynamicPolyLineType (strings) binnen en zet deze om in een array van dynamicPolyline (LatLngExpression)
   export function dynamicPolyLineResolver (
@@ -39,4 +84,16 @@ return [];
       ...dynamicPolylines.map(i => convertdynamicPolyline(i)).reduce((prev, current) => [...prev, ...current], [])
   );
     return [polyLines];
+}
+
+
+//Deze functie krijgt een array van dynamicPolyLineType (strings) binnen en zet deze om in een array van dynamicPolygons (LatLngExpression)
+export function dynamicPolyGonResolver (
+  dynamicPolylines: DynamicPolyLinesType[]
+): [DynamicPolyGon[]] {
+    const polyGons: DynamicPolyGon[] = [];
+    polyGons.push(
+    ...dynamicPolylines.map(i => convertdynamicPolyGon(i)).reduce((prev, current) => [...prev, ...current], [])
+);
+  return [polyGons];
 }

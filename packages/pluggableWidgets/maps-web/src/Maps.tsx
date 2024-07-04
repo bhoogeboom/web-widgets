@@ -8,7 +8,7 @@ import { Marker } from "../typings/shared";
 import { translateZoom } from "./utils/zoom";
 import "leaflet/dist/leaflet.css";
 import "./ui/Maps.scss";
-import { dynamicPolyLineResolver } from "./utils/polylineCustom";
+import { dynamicPolyLineResolver, dynamicPolyGonResolver } from "./utils/polylineCustom";
 
 export default function Maps(props: MapsContainerProps): ReactNode {
     const [locations] = useLocationResolver(
@@ -18,6 +18,10 @@ export default function Maps(props: MapsContainerProps): ReactNode {
     );
 
     const [dynamicPolyLines] = dynamicPolyLineResolver (
+        props.dynamicPolyLines
+    );
+
+    const [dynamicPolyGons] = dynamicPolyGonResolver (
         props.dynamicPolyLines
     );
 
@@ -42,6 +46,7 @@ export default function Maps(props: MapsContainerProps): ReactNode {
             heightUnit={props.heightUnit}
             locations={locations}
             dynamicPolyLines={dynamicPolyLines}
+            dynamicPolyGons={dynamicPolyGons}
             mapsToken={props.apiKeyExp?.value ?? props.apiKey}
             mapId={props.googleMapId}
             mapProvider={props.mapProvider}
