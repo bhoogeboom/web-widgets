@@ -4,12 +4,12 @@ import { DynamicPolyLine, DynamicPolyGon } from "../../typings/shared";
 import { ObjectItem, ValueStatus } from "mendix";
 import { parseLatLngArrayFromString } from "../utils/functionsCustom"
 
-export const polyLineOptions = { color: 'blue' };
+//export const polyLineOptions = { color: '#FF0000' };
 
 
 //Deze functie zet een object dynamicPolyLine(string) om in een object van dynamicPolyline (LatLngExpression) 
 function polyLineDataSource(dynamicPolyline: DynamicPolyLinesType, item: ObjectItem): DynamicPolyLine | null {
-  const { title, coordinates, onClickAttribute, polytype } = dynamicPolyline;
+  const { title, coordinates, onClickAttribute, polytype, color, opacity, thickness } = dynamicPolyline;
   const polyType: string = polytype ? polytype.get(item).value as string : "";
 
   if (polyType === 'Polyline') {
@@ -20,7 +20,10 @@ function polyLineDataSource(dynamicPolyline: DynamicPolyLinesType, item: ObjectI
     return {
       title: title ? title.get(item).value : "",
       coordinates: coordinatesLatLngExpression,
-      onClick: onClickAttribute ? onClickAttribute.get(item).execute : undefined
+      onClick: onClickAttribute ? onClickAttribute.get(item).execute : undefined,
+      color: color ? color.get(item).value : "",
+      opacity: opacity ? opacity.get(item).value : 1
+      thickness: thickness ? thickness.get(item).value : 1
     };
   } else {
     return null; // Return null if polyType is not 'polyLine'
@@ -30,7 +33,7 @@ function polyLineDataSource(dynamicPolyline: DynamicPolyLinesType, item: ObjectI
 
 //Deze functie zet een object dynamicPolyLine(string) om in een object van dynamicPolyline (LatLngExpression) 
 function polyGonDataSource(dynamicPolyline: DynamicPolyLinesType, item: ObjectItem): DynamicPolyGon | null {
-  const { title, coordinates, onClickAttribute, polytype } = dynamicPolyline;
+  const { title, coordinates, onClickAttribute, polytype, color, opacity, thickness } = dynamicPolyline;
   const polyType: string = polytype ? polytype.get(item).value as string : "";
 
   if (polyType === 'Polygon') {
@@ -41,7 +44,10 @@ function polyGonDataSource(dynamicPolyline: DynamicPolyLinesType, item: ObjectIt
     return {
       title: title ? title.get(item).value : "",
       coordinates: coordinatesLatLngExpression,
-      onClick: onClickAttribute ? onClickAttribute.get(item).execute : undefined
+      onClick: onClickAttribute ? onClickAttribute.get(item).execute : undefined,
+      color: color ? color.get(item).value : "",
+      opacity: opacity ? opacity.get(item).value : 1
+      thickness: thickness ? thickness.get(item).value : 1
     };
   } else {
     return null; // Return null if polyType is not 'polyGon'

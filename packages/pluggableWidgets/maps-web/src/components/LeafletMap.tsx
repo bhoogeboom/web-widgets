@@ -7,7 +7,7 @@ import { MapProviderEnum } from "../../typings/MapsProps";
 import { translateZoom } from "../utils/zoom";
 import { latLngBounds, Icon as LeafletIcon, DivIcon, marker } from "leaflet";
 import { baseMapLayer } from "../utils/leaflet";
-import { polyLineOptions } from "../utils/polylineCustom";
+//import { polyLineOptions } from "../utils/polylineCustom";
 
 
 export interface LeafletProps extends SharedProps {
@@ -95,10 +95,7 @@ export function LeafletMap(props: LeafletProps): ReactElement {
                             <Polyline
                                 key={`polyline_${index}`}
                                 className="polyline"
-                                eventHandlers={{
-                                    click: dynamicPolyLine.onClick ? undefined : dynamicPolyLine.onClick
-                                }}
-                                pathOptions={polyLineOptions}
+                                pathOptions={{ color: dynamicPolyLine.color, weight: dynamicPolyLine.thickness, opacity: dynamicPolyLine.opacity}}
                                 positions={dynamicPolyLine.coordinates}
                             >
                                  {dynamicPolyLine.title && (
@@ -125,10 +122,7 @@ export function LeafletMap(props: LeafletProps): ReactElement {
                             <Polygon
                                 key={`polygon_${index}`}
                                 className="polygon"
-                                eventHandlers={{
-                                    click: dynamicPolygon.onClick ? undefined : dynamicPolygon.onClick
-                                }}
-                                pathOptions={polyLineOptions}
+                                pathOptions={{ color: dynamicPolygon.color, weight: dynamicPolygon.thickness, opacity: dynamicPolygon.opacity }}
                                 positions={dynamicPolygon.coordinates}
                             >
                                  {dynamicPolygon.title && (
@@ -144,11 +138,10 @@ export function LeafletMap(props: LeafletProps): ReactElement {
                             </Polygon>
                         );
                         } else {
-                            console.warn(`Coordinates are null, undefined, or invalid for dynamicPolyLine at index ${index}:`, dynamicPolyLine.coordinates);
+                            console.warn(`Coordinates are null, undefined, or invalid for dynamicPolyGon at index ${index}:`, dynamicPolyLine.coordinates);
                         return null;
                         }
                     })}
-
 
                     {locations
                         .concat(currentLocation ? [currentLocation] : [])

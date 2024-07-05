@@ -21,12 +21,18 @@ export interface DynamicPolyLine {
     coordinates?: LatLngExpression[][];
     onClick?: () => void;
     title?: string;
+    color?: string;
+    opacity?: number;
+    thickness?: number;
 }
 
 export interface DynamicPolyGon {
     coordinates?: LatLngExpression[][];
     onClick?: () => void;
     title?: string;
+    color?: string;
+    opacity?: number;
+    thickness?: number;
 }
 
 
