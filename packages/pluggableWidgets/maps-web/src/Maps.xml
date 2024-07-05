@@ -314,6 +314,7 @@
                         <enumerationValue key="automatic">Automatic</enumerationValue>
                         <enumerationValue key="world">World</enumerationValue>
                         <enumerationValue key="continent">Continent</enumerationValue>
+                        <enumerationValue key="country">Country</enumerationValue>
                         <enumerationValue key="city">City</enumerationValue>
                         <enumerationValue key="street">Street</enumerationValue>
                         <enumerationValue key="buildings">Buildings</enumerationValue>

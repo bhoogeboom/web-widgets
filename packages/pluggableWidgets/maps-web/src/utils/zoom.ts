@@ -4,6 +4,8 @@ export function translateZoom(level: string): number {
             return 1;
         case "continent":
             return 5;
+        case "country":
+            return 7.5;
         case "city":
             return 10;
         case "street":

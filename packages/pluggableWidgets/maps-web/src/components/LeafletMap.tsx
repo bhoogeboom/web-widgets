@@ -54,7 +54,7 @@ function SetBoundsComponent(props: Pick<LeafletProps, "autoZoom" | "currentLocat
 }
 
 export function LeafletMap(props: LeafletProps): ReactElement {
-    const center = { lat: 51.906688, lng: 4.48837 };
+    const center = { lat: 52.092876, lng: 5.104480 };
     const {
         autoZoom,
         attributionControl,
