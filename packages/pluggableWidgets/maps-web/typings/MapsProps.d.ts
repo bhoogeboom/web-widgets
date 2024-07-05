@@ -46,6 +46,7 @@ export interface DynamicPolyLinesType {
     color: ListAttributeValue<string>;
     opacity: ListAttributeValue<Big>;
     thickness: ListAttributeValue<Big>;
+    inverseCoordinates: ListAttributeValue<boolean>;
     onClickAttribute?: ListActionValue;
 }
 
@@ -88,6 +89,7 @@ export interface DynamicPolyLinesPreviewType {
     color: string;
     opacity: string;
     thickness: string;
+    inverseCoordinates: string;
     onClickAttribute: {} | null;
 }
 

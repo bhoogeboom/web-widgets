@@ -9,13 +9,14 @@ import { parseLatLngArrayFromString } from "../utils/functionsCustom"
 
 //Deze functie zet een object dynamicPolyLine(string) om in een object van dynamicPolyline (LatLngExpression) 
 function polyLineDataSource(dynamicPolyline: DynamicPolyLinesType, item: ObjectItem): DynamicPolyLine | null {
-  const { title, coordinates, onClickAttribute, polytype, color, opacity, thickness } = dynamicPolyline;
+  const { title, coordinates, onClickAttribute, polytype, color, opacity, thickness, inverseCoordinates } = dynamicPolyline;
   const polyType: string = polytype ? polytype.get(item).value as string : "";
 
   if (polyType === 'Polyline') {
+    const inverse: boolean = inverseCoordinates ? inverseCoordinates.get(item).value as boolean : false;
     const coordinatesString: string = coordinates ? coordinates.get(item).value as string : "";
     // Convert coordinates string to LatLngExpression that can be used as input for the leaflet widget
-    const coordinatesLatLngExpression: LatLngExpression[][] = parseLatLngArrayFromString(coordinatesString);
+    const coordinatesLatLngExpression: LatLngExpression[][] = parseLatLngArrayFromString(coordinatesString, inverse);
 
     return {
       title: title ? title.get(item).value : "",
@@ -33,13 +34,14 @@ function polyLineDataSource(dynamicPolyline: DynamicPolyLinesType, item: ObjectI
 
 //Deze functie zet een object dynamicPolyLine(string) om in een object van dynamicPolyline (LatLngExpression) 
 function polyGonDataSource(dynamicPolyline: DynamicPolyLinesType, item: ObjectItem): DynamicPolyGon | null {
-  const { title, coordinates, onClickAttribute, polytype, color, opacity, thickness } = dynamicPolyline;
+  const { title, coordinates, onClickAttribute, polytype, color, opacity, thickness, inverseCoordinates } = dynamicPolyline;
   const polyType: string = polytype ? polytype.get(item).value as string : "";
 
   if (polyType === 'Polygon') {
+    const inverse: boolean = inverseCoordinates ? inverseCoordinates.get(item).value as boolean : false;
     const coordinatesString: string = coordinates ? coordinates.get(item).value as string : "";
     // Convert coordinates string to LatLngExpression that can be used as input for the leaflet widget
-    const coordinatesLatLngExpression: LatLngExpression[][] = parseLatLngArrayFromString(coordinatesString);
+    const coordinatesLatLngExpression: LatLngExpression[][] = parseLatLngArrayFromString(coordinatesString, inverse);
 
     return {
       title: title ? title.get(item).value : "",
